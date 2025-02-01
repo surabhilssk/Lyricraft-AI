@@ -1,9 +1,12 @@
 import { HfInference } from "@huggingface/inference";
 import express from "express";
+import { userMiddleware } from "../middlewares";
 
 export const poemRouter = express.Router();
 
-poemRouter.post("/", async(req: any, res:any) => {
+poemRouter.use(userMiddleware);
+
+poemRouter.post("/", async(req: any, res: any) => {
 
     const hf = new HfInference(process.env.HUGGINGFACE_API);
 
