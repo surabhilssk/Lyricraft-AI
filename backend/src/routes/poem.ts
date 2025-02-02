@@ -17,11 +17,11 @@ poemRouter.post("/", async(req: any, res: any) => {
             messages: [
                 {
                     role: "user",
-                    content: "Be a poet and write a poem about rain"
+                    content: "Be a poet and write a poem about rain."
                 }
             ],
             provider: "sambanova",
-            max_tokens: 500
+            max_tokens: 500,
         });
         console.log(chatCompletion.choices[0].message.content);
         return res.status(200).json(chatCompletion.choices[0].message.content);
