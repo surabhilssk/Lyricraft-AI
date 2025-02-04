@@ -4,36 +4,21 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 
-interface AuthFormProps {
-  headingText: string;
-}
-
-export const AuthForm = ({ headingText }: AuthFormProps) => {
+export const SignupAuthForm = () => {
   return (
     <div>
       <BackgroundGradient
         children={
-          <div className="bg-gray-900 min-h-[25rem] min-w-fit max-w-sm border rounded-3xl">
+          <div className="bg-gray-900 min-h-[25rem] min-w-[19rem] max-w-sm border rounded-3xl">
             <div className="px-6 text-gray-100 text-center">
-              <div className="font-medium text-3xl mt-6">
-                {headingText === "signup" ? "Sign Up" : "Sign in"}
-              </div>
+              <div className="font-medium text-3xl mt-6">Sign Up</div>
               <div>
-                {headingText === "signup" ? (
-                  <div className="text-slate-400">
-                    Already have an account?{" "}
-                    <Link to="/signin" className="underline font-normal">
-                      Sign in
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="text-slate-400">
-                    Don't have an account?{" "}
-                    <Link to="/signup" className="underline font-normal">
-                      Sign up
-                    </Link>
-                  </div>
-                )}
+                <div className="text-slate-400">
+                  Already have an account?{" "}
+                  <Link to="/signin" className="underline font-normal">
+                    Sign in
+                  </Link>
+                </div>
               </div>
               <div className="text-start mt-4">
                 <Form label="Name" placeholder="Enter your name" type="name" />
@@ -50,9 +35,7 @@ export const AuthForm = ({ headingText }: AuthFormProps) => {
               </div>
             </div>
             <div className="text-center mt-[22px]">
-              <InteractiveHoverButton>
-                {headingText === "signup" ? "Sign Up" : "Sign in"}
-              </InteractiveHoverButton>
+              <InteractiveHoverButton>Sign up</InteractiveHoverButton>
             </div>
           </div>
         }
