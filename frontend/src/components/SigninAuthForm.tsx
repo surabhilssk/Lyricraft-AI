@@ -59,7 +59,7 @@ const Form = ({
   return (
     <div className="mt-3">
       <div>
-        <Label className="font-light text-sm">{label}</Label>
+        <Label className="font-light text-xs text-slate-300">{label}</Label>
         <Input type={type} placeholder={placeholder} />
       </div>
     </div>
