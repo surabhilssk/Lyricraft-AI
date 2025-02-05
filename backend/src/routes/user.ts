@@ -17,10 +17,10 @@ const prisma = new PrismaClient({
 
 userRouter.post("/signup", async (req: any, res: any) => {
     const body = req.body;
-    const { success } = signupInput.safeParse(body);
-    if(!success){
+    const result = signupInput.safeParse(body);
+    if(!result.success){
         return res.status(400).json({
-            error: "Invalid input"
+            error: result.error
         });
     }
     const saltRounds = await bcrypt.genSalt();
