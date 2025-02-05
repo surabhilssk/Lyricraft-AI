@@ -20,7 +20,7 @@ userRouter.post("/signup", async (req: any, res: any) => {
     const { success } = signupInput.safeParse(body);
     if(!success){
         return res.status(400).json({
-            error: "Invalid input"
+            error: "Password should be a min of 8 characters"
         });
     }
     const saltRounds = await bcrypt.genSalt();
