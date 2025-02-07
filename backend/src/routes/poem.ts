@@ -1,8 +1,20 @@
 import express from "express";
 import { userMiddleware } from "../middlewares";
-import { GoogleGenerativeAI,HarmCategory,HarmBlockThreshold } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { PrismaClient } from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
 export const poemRouter = express.Router();
+
+const prisma = new PrismaClient({
+    datasources: {
+        db: {
+            url: process.env.DIRECT_DATABASE_URL,
+        }
+    }
+}).$extends(withAccelerate());
+
+
 poemRouter.use(userMiddleware);
 
 const apiKey = process.env.GEMINI_API;
@@ -49,5 +61,65 @@ poemRouter.post("/", async(req: any, res: any) => {
             error: "Failed to generate poem",
             details: e
         })
+    }
+});
+
+poemRouter.post("/history", async(req: any, res: any) => {
+    const body = await req.body;
+    const authorId = req.userId
+    try{
+        const historyPost = await prisma.poemHistory.create({
+            data: {
+                poemTitle: body.title,
+                poemContent: body.content,
+                userId: authorId
+            }
+        });
+        return res.status(200).json({
+            message: "History added successfully",
+            postId: historyPost.id
+        });
+    }catch(e){
+        return res.status(400).json({
+            error: "Some error occured while storing history"
+        });
+    }
+});
+
+poemRouter.get("/history", async(req: any, res: any) => {
+    const authorId = req.userId;
+    try{
+        const promptHistory = await prisma.poemHistory.findMany({
+            where: {
+                userId: authorId
+            }
+        });
+        return res.status(200).json({
+            history: promptHistory
+        });
+    }catch(e){
+        return res.status(411).json({
+            error: "Failed to fetch history",
+            details: e
+        });
+    }
+});
+
+poemRouter.get("/:id", async(req, res) => {
+    const poemId = req.params.id;
+    try{
+        const poemSelect = await prisma.poemHistory.findUnique({
+            where: {
+                id: poemId
+            }
+        });
+        res.status(200).json({
+            poem: poemSelect
+        });
+    }catch(e){
+        res.status(400).json({
+            error: "Some error occured while fetching the poem",
+            details: e
+        });
     }
 })
