@@ -3,13 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-
-    --radius: 0.5rem
-  }
-}
-
 body{
   @apply font-sans font-light;
 }
